@@ -1,4 +1,8 @@
 let food = [
+    // See https://ec.europa.eu/eurostat/cache/website/economy/food-price-monitoring/
+    // See https://ec.europa.eu/eurostat/web/hicp
+    // See https://www.ons.gov.uk/economy/inflationandpriceindices
+
     // 01.1.1 Bread and Cereals
     'Large white loaves — sliced / unsliced',
     'Bread rolls',
@@ -151,7 +155,7 @@ let food = [
     'Mixer drinks',
 
     // Alcohol-free beer
-'    Alcohol-free beer',
+    'Alcohol-free beer',
 
 ];
 
@@ -163,8 +167,12 @@ function loadForgetListFromLocalStore() {
     if (forgetList == null) {
         forgetList = new ForgetList();
     }
+    let beforeLoad = "" + forgetList;
     forgetList.loadFromJSONString(forgetListString);
-    console.debug("Current list of items to forget: " + forgetList);
+    let afterLoad = "" + forgetList;
+    if (beforeLoad !== afterLoad) {
+        console.debug("Loaded forget list from local store: " + forgetList);
+    }
 }
 
 function saveForgetListToLocalStore() {
@@ -200,19 +208,6 @@ function rotate() {
     document.getElementById('foodItem').innerHTML = food[randomNumber];
 }
 
-function forget() {
-    if (!hasSomethingToRotate()) {
-        return;
-    }
-    let result = confirm("Are you on a rotation diet and tried this item recently? " +
-        "You won't see it again for 4 days.");
-    if (result) {
-        let item = new ForgetItem(document.getElementById('foodItem').innerHTML, new Date());
-        forgetList.add(item);
-        saveForgetListToLocalStore();
-        rotate();
-    }
-}
 
 class ForgetItem {
     constructor(item, date) {
@@ -296,4 +291,54 @@ class ForgetList {
         }
         return string;
     }
+}
+
+
+function forget() {
+    // Check if user preference is stored
+    const dontAskPreference = localStorage.getItem('dontAskForgetConfirmation');
+
+    if (dontAskPreference === 'true') {
+        // If user chose to not ask again and confirmed yes previously
+        proceedWithForget();
+    } else {
+        // Show the confirmation dialog
+        document.getElementById('confirmDialog').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+    }
+}
+
+function handleConfirmResponse(confirmed) {
+    // Hide the dialog and overlay
+    document.getElementById('confirmDialog').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+
+    if (confirmed) {
+        // If user checked "Don't ask again"
+        const dontAskAgain = document.getElementById('dontAskAgain').checked;
+        if (dontAskAgain) {
+            localStorage.setItem('dontAskForgetConfirmation', 'true');
+        }
+
+        proceedWithForget();
+    }
+
+    // Reset checkbox state
+    document.getElementById('dontAskAgain').checked = false;
+}
+
+function proceedWithForget() {
+    if (!hasSomethingToRotate()) {
+        return;
+    }
+    let item = new ForgetItem(document.getElementById('foodItem').innerHTML, new Date());
+    forgetList.add(item);
+    saveForgetListToLocalStore();
+    rotate();
+}
+
+// Internal: reset the "Don't ask again" preference for debugging
+function _resetForgetPreference() {
+    localStorage.removeItem('dontAskForgetConfirmation');
+    console.info('Reset the "Don\'t ask again" preference');
 }
