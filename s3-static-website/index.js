@@ -159,6 +159,8 @@ let food = [
 
 ];
 
+const DAYS_TO_FORGET = 7;
+
 let forgetList = null;
 
 function loadForgetListFromLocalStore() {
@@ -191,7 +193,7 @@ function hasSomethingToRotate() {
 
 function rotate() {
     loadForgetListFromLocalStore();
-    forgetList.expireItemsOlderThan(4);
+    forgetList.expireItemsOlderThan(DAYS_TO_FORGET);
     saveForgetListToLocalStore();
     if (!hasSomethingToRotate()) {
         return;

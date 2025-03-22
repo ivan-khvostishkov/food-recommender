@@ -27,7 +27,7 @@
 <div id="confirmDialog" style="display: none; position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);
     background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000;">
     <h3 style="margin-top: 0;">Confirm</h3>
-    <p>Are you sure you want to forget this item for 4 days?</p>
+    <p>Are you sure you want to forget this item for 7 days?</p>
     <div style="margin: 15px 0;">
         <label>
             <input type="checkbox" id="dontAskAgain"> Don't ask again
@@ -42,16 +42,17 @@
 <div id="overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(0,0,0,0.5); z-index: 999;"></div>
 
-<div style="padding: 2cm 1cm 2cm 1.5cm;">
-    <div>
+<div style="padding: 2cm 0cm 2cm 0cm;">
+    <div style="position: absolute; width: 100%; top: 1cm; margin-left: 1.4cm;">
+        <div style="font-size: 5mm;"><i class="fa-solid fa-pepper-hot"></i>&nbsp;&nbsp;<b>Food Recommender</b> by NoSocial.Net</div>
+    </div>
+    <div style="position: absolute; width: 100%; top: 30%; margin-left: 1.5cm;">
         <div id="foodItem" style="font-size: 20mm;"></div>
     </div>
-    <div style="position: absolute; width: 100%; bottom: 0px; padding-bottom: 2cm;">
-        <button style="font-size: 10mm; width: 25%; height: 2cm; margin-right: 1cm;" onclick="rotate();">↻</button>
-        <button style="font-size: 10mm; width: 25%; height: 2cm; margin-right: 1cm;" onclick="forget();">Forget for 4 days</button>
-        <button style="font-size: 10mm; width: 25%; height: 2cm; margin-right: 1cm;" onclick="rotate();">
-            <i class="fas fa-sync-alt"></i>
-        </button>
+    <div style="position: absolute; width: 100%; bottom: 0px; margin-bottom: 2cm; text-align: center;">
+        <button style="font-size: 10mm; width: 25%; height: 2cm; float:left; margin-left: 1.5cm;" onclick="forget();">Forget for 7 days</button>
+        <button style="font-size: 10mm; width: 30%; height: 2cm;" onclick="rotate();"><i class="fas fa-sync-alt"></i></button>
+        <button style="font-size: 10mm; width: 25%; height: 2cm; float:right; margin-right: 1.5cm;" onclick="basketTip();">Add to basket</button>
     </div>
 </div>
 </body>
