@@ -329,6 +329,19 @@ function handleConfirmResponse(confirmed) {
     document.getElementById('dontAskAgain').checked = false;
 }
 
+
+function basketTip() {
+    // Show the tip dialog
+    document.getElementById('basketTip').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
+}
+
+function handleBasketTip() {
+    // Hide the dialog and overlay
+    document.getElementById('basketTip').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+}
+
 function proceedWithForget() {
     if (!hasSomethingToRotate()) {
         return;
