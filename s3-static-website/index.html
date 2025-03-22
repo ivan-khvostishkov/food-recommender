@@ -23,6 +23,14 @@
             background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             z-index: 1000;
             font-family: Arial,sans-serif;
+            font-size: 9mm;
+        }
+        input[type=checkbox] {
+            transform: scale(1.5);
+        }
+        button {
+            font-family: Arial,sans-serif;
+            font-size: 9mm;
         }
     </style>
 </head>
@@ -62,9 +70,9 @@
         <div id="foodItem" style="font-size: 25mm;"></div>
     </div>
     <div style="position: absolute; width: 100%; bottom: 0; margin-bottom: 2cm; text-align: center;">
-        <button style="font-size: 9mm; width: 30%; height: 2cm; float:left; margin-left: 1.5cm;" onclick="forget();">Forget for 7 days</button>
-        <button style="font-size: 9mm; width: 30%; height: 2cm;" onclick="rotate();"><i class="fas fa-sync-alt"></i></button>
-        <button style="font-size: 9mm; width: 30%; height: 2cm; float:right; margin-right: 1.5cm;" onclick="basketTip();">Add to cart</button>
+        <button style="font-size: 9mm; width: 25%; height: 2cm; float:left; margin-left: 1.5cm;" onclick="forget();"><i class="fa-solid fa-arrow-left"></i></button>
+        <button style="font-size: 9mm; width: 25%; height: 2cm;" onclick="rotate();"><i class="fa-solid fa-rotate"></i></button>
+        <button style="font-size: 9mm; width: 25%; height: 2cm; float:right; margin-right: 1.5cm;" onclick="basketTip();"><i class="fa-solid fa-arrow-right"></i></button>
     </div>
 </div>
 </body>
