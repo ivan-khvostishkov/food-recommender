@@ -5,4 +5,4 @@
 [http://food.nosocial.net/](http://food-recommender.nosocial.net/)
 
 ## Support
-For help and support contact [food-recommender@nosocial.net](mailto:food-recommender@nosocial.net).
+For help and support contact [food@nosocial.net](mailto:food-recommender@nosocial.net).
