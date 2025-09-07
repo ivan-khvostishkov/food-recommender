@@ -169,7 +169,7 @@ function rotate() {
     } while (forgetList.hasItem(food[randomNumber]));
 
     currentItem = food[randomNumber];
-    document.getElementById('foodItem').innerHTML = currentItem;
+    document.getElementById('foodItem').innerHTML = formatSeasonalItem(currentItem);
 
     // Reset card animation
     cardElement.classList.remove('swiped-left', 'swiped-right');
@@ -308,7 +308,7 @@ function displaySearchItems(items) {
 
 function selectItem(item) {
     currentItem = item;
-    document.getElementById('foodItem').innerHTML = currentItem;
+    document.getElementById('foodItem').innerHTML = formatSeasonalItem(currentItem);
     showScreen('mainScreen');
 }
 
@@ -482,6 +482,16 @@ function saveForgetListToLocalStore() {
 
 function hasSomethingToRotate() {
     return forgetList.items.length < food.length;
+}
+
+// Format seasonal items with month on second line
+function formatSeasonalItem(item) {
+    const monthMatch = item.match(/^(.+?)\s+\(([^)]+)\)$/);
+    if (monthMatch) {
+        const [, itemName, month] = monthMatch;
+        return `${itemName}<br><span class="month-text">${month}</span>`;
+    }
+    return item;
 }
 
 // ForgetItem and ForgetList classes (keep your existing implementation)
