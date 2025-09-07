@@ -42,15 +42,7 @@ function setupSwipeGestures() {
     cardElement.addEventListener('mouseup', handleMouseUp);
     cardElement.addEventListener('mouseleave', handleMouseUp);
 
-    // Single click to select all text
-    foodText.addEventListener('click', (e) => {
-        if (!hasDragged) {
-            const range = document.createRange();
-            range.selectNodeContents(foodText);
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-        }
-    });
+
 
     // Track selection state
     document.addEventListener('selectionchange', () => {
