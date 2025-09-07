@@ -3,7 +3,7 @@
 <head>
     <title>Food Recommender by NoSocial.Net</title>
     <meta charset="UTF-8" />
-    <script src="index.js"></script>
+    <script src="food.js"></script>
     <style>
         html {
             padding: 0;
@@ -66,6 +66,22 @@
     <div style="position: absolute; width: 100%; top: 1cm; margin-left: 1.4cm;">
         <div style="font-size: 9mm;"><i class="fa-solid fa-pepper-hot"></i>&nbsp;&nbsp;<b>Food Recommender</b> by NoSocial.Net</div>
     </div>
+
+    <div style="position: absolute; top: 1cm; right: 1.5cm;">
+        <div style="display: flex; align-items: center;">
+            <input type="text"
+                   placeholder="Search..."
+                   style="padding: 8px 30px 8px 10px;
+                      border-radius: 5px;
+                      border: 1px solid #ccc;
+                      font-size: 16px;">
+            <i class="fa-solid fa-magnifying-glass"
+               style="position: absolute;
+                  right: 10px;
+                  color: #666;"></i>
+        </div>
+    </div>
+
     <div style="position: absolute; width: 90%; top: 33%; margin-left: 1.5cm;">
         <div id="foodItem" style="font-size: 25mm;"></div>
     </div>
