@@ -7,6 +7,7 @@ let food = FoodDatabase.getFoodList();
 const DAYS_TO_FORGET = 7;
 let forgetList = null;
 let shoppingList = [];
+let collectedItems = [];
 let currentItem = null;
 let currentScreen = 'mainScreen';
 let touchStartX = null;
@@ -397,9 +398,10 @@ function loadShoppingList() {
         shoppingList.forEach((item, index) => {
             const row = document.createElement('div');
             row.className = 'item-row';
+            const isCollected = collectedItems.includes(item);
             row.innerHTML = `
                 <span class="item-number">${index + 1}.</span>
-                <span class="item-name">${item}</span>
+                <span class="item-name ${isCollected ? 'collected' : ''}" onclick="toggleCollected('${item.replace(/'/g, "\\'")}')">${item}</span>
                 <button class="delete-btn" onclick="removeFromCart('${item.replace(/'/g, "\\'")}')">
                     <i class="fa-solid fa-trash"></i>
                 </button>
@@ -415,9 +417,24 @@ function removeFromCart(item) {
     const index = shoppingList.indexOf(item);
     if (index > -1) {
         shoppingList.splice(index, 1);
+        const collectedIndex = collectedItems.indexOf(item);
+        if (collectedIndex > -1) {
+            collectedItems.splice(collectedIndex, 1);
+        }
         saveShoppingListToLocalStore();
         loadShoppingList();
     }
+}
+
+function toggleCollected(item) {
+    const index = collectedItems.indexOf(item);
+    if (index > -1) {
+        collectedItems.splice(index, 1);
+    } else {
+        collectedItems.push(item);
+    }
+    saveShoppingListToLocalStore();
+    loadShoppingList();
 }
 
 // Reset functionality
@@ -480,10 +497,19 @@ function loadShoppingListFromLocalStore() {
             shoppingList = [];
         }
     }
+    const collectedStored = localStorage.getItem('collectedItems');
+    if (collectedStored) {
+        try {
+            collectedItems = JSON.parse(collectedStored);
+        } catch (e) {
+            collectedItems = [];
+        }
+    }
 }
 
 function saveShoppingListToLocalStore() {
     localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
+    localStorage.setItem('collectedItems', JSON.stringify(collectedItems));
 }
 
 function loadFoodListFromLocalStore() {

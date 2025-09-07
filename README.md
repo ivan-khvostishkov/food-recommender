@@ -15,6 +15,7 @@
 ### 🛒 Shopping List Management
 - **One-Touch Adding**: Add items to shopping list with right swipe or green button
 - **Visual Cart Counter**: Real-time shopping list count in header
+- **Strike-Through Items**: Tap item names to mark as collected with cross-through effect
 - **Easy Removal**: Delete items from shopping list with trash button
 - **Persistent Storage**: Shopping list saved locally across sessions
 
