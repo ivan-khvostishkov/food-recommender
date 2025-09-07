@@ -42,34 +42,28 @@ function setupSwipeGestures() {
     cardElement.addEventListener('mouseup', handleMouseUp);
     cardElement.addEventListener('mouseleave', handleMouseUp);
 
-    // Text selection on click
+    // Single click to select all text
     foodText.addEventListener('click', (e) => {
         if (!hasDragged) {
-            if (textSelected) {
-                window.getSelection().removeAllRanges();
-                textSelected = false;
-            } else {
-                const range = document.createRange();
-                range.selectNodeContents(foodText);
-                window.getSelection().removeAllRanges();
-                window.getSelection().addRange(range);
-                textSelected = true;
-            }
+            const range = document.createRange();
+            range.selectNodeContents(foodText);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
         }
     });
 
-    // Clear selection when clicking elsewhere
-    document.addEventListener('click', (e) => {
-        if (!foodText.contains(e.target)) {
-            window.getSelection().removeAllRanges();
-            textSelected = false;
-        }
+    // Track selection state
+    document.addEventListener('selectionchange', () => {
+        textSelected = window.getSelection().toString().length > 0;
     });
 }
 
 // Touch/Mouse handlers
 function handleTouchStart(e) {
-    if (textSelected) return;
+    if (document.getElementById('foodItem').contains(e.target)) {
+        return;
+    }
+    
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
     currentX = touchStartX;
@@ -97,9 +91,8 @@ function handleMouseDown(e) {
 
 function handleTouchMove(e) {
     if (!touchStartX) return;
+    
     hasDragged = true;
-    textSelected = false;
-    window.getSelection().removeAllRanges();
     currentX = e.touches[0].clientX;
     currentY = e.touches[0].clientY;
     updateCardPosition();
