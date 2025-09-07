@@ -552,7 +552,7 @@ function formatSeasonalItem(item) {
     const monthMatch = item.match(/^(.+?)\s+\(([^)]+)\)$/);
     if (monthMatch) {
         const [, itemName, month] = monthMatch;
-        return `${itemName}<br><span class="month-text">${month}</span>`;
+        return `${itemName} <br><span class="month-text">${month}</span>`;
     }
     return item;
 }
