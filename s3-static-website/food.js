@@ -15,10 +15,7 @@ let touchStartY = null;
 let currentX = null;
 let currentY = null;
 let cardElement = null;
-let longTapTimer = null;
-let mouseDownTimer = null;
-let isDoubleClick = false;
-
+let hasDragged = false;
 // Initialize app
 function initApp() {
     loadFromLocalStorage();
@@ -43,60 +40,13 @@ function setupSwipeGestures() {
     cardElement.addEventListener('mouseup', handleMouseUp);
     cardElement.addEventListener('mouseleave', handleMouseUp);
 
-    // Let system handle double-click text selection naturally
 
-    // Mouse long press events
-    foodText.addEventListener('mousedown', (e) => {
-        mouseDownTimer = setTimeout(() => {
-            isDoubleClick = true;
-            toggleTextSelection(foodText);
-            setTimeout(() => { isDoubleClick = false; }, 200);
-        }, 600);
-    });
-
-    foodText.addEventListener('mouseup', (e) => {
-        if (mouseDownTimer) {
-            clearTimeout(mouseDownTimer);
-            mouseDownTimer = null;
-        }
-    });
-
-    // Mobile touch events for text selection
-    foodText.addEventListener('touchstart', (e) => {
-        longTapTimer = setTimeout(() => {
-            isDoubleClick = true;
-            toggleTextSelection(foodText);
-            if (navigator.vibrate) {
-                navigator.vibrate(50);
-            }
-            setTimeout(() => { isDoubleClick = false; }, 200);
-        }, 600);
-    }, {passive: true});
-
-    foodText.addEventListener('touchend', (e) => {
-        if (longTapTimer) {
-            clearTimeout(longTapTimer);
-            longTapTimer = null;
-        }
-    }, {passive: true});
-
-    foodText.addEventListener('touchmove', (e) => {
-        if (longTapTimer) {
-            clearTimeout(longTapTimer);
-            longTapTimer = null;
-        }
-    }, {passive: true});
 
 
 }
 
 // Touch/Mouse handlers
 function handleTouchStart(e) {
-    if (isDoubleClick) return;
-    // Check if there's an active text selection
-    const selection = window.getSelection();
-    if (selection.toString()) return;
-    
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
     currentX = touchStartX;
@@ -105,11 +55,6 @@ function handleTouchStart(e) {
 }
 
 function handleMouseDown(e) {
-    if (isDoubleClick) return;
-    // Check if there's an active text selection
-    const selection = window.getSelection();
-    if (selection.toString()) return;
-    
     touchStartX = e.clientX;
     touchStartY = e.clientY;
     currentX = touchStartX;
@@ -120,6 +65,7 @@ function handleMouseDown(e) {
 
 function handleTouchMove(e) {
     if (!touchStartX) return;
+    hasDragged = true;
     currentX = e.touches[0].clientX;
     currentY = e.touches[0].clientY;
     updateCardPosition();
@@ -127,6 +73,7 @@ function handleTouchMove(e) {
 
 function handleMouseMove(e) {
     if (!touchStartX) return;
+    hasDragged = true;
     currentX = e.clientX;
     currentY = e.clientY;
     updateCardPosition();
@@ -634,26 +581,4 @@ class ForgetList {
     }
 }
 
-function toggleTextSelection(element) {
-    const selection = window.getSelection();
-    
-    if (selection.toString()) {
-        // Clear selection
-        selection.removeAllRanges();
-    } else {
-        // Create selection
-        const range = document.createRange();
-        range.selectNodeContents(element);
-        selection.removeAllRanges();
-        selection.addRange(range);
-        
-        // Prevent the selection from being immediately cleared
-        setTimeout(() => {
-            if (selection.toString() === '') {
-                // Re-select if selection was cleared
-                selection.removeAllRanges();
-                selection.addRange(range);
-            }
-        }, 50);
-    }
-}
+
