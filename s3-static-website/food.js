@@ -14,6 +14,7 @@ let touchStartY = null;
 let currentX = null;
 let currentY = null;
 let cardElement = null;
+let longTapTimer = null;
 
 // Initialize app
 function initApp() {
@@ -44,6 +45,28 @@ function setupSwipeGestures() {
         foodText.classList.add('selectable');
         setTimeout(() => foodText.classList.remove('selectable'), 3000);
     });
+
+    // Long tap for mobile
+    foodText.addEventListener('touchstart', (e) => {
+        longTapTimer = setTimeout(() => {
+            foodText.classList.add('selectable');
+            setTimeout(() => foodText.classList.remove('selectable'), 3000);
+        }, 500);
+    }, {passive: true});
+
+    foodText.addEventListener('touchend', () => {
+        if (longTapTimer) {
+            clearTimeout(longTapTimer);
+            longTapTimer = null;
+        }
+    }, {passive: true});
+
+    foodText.addEventListener('touchmove', () => {
+        if (longTapTimer) {
+            clearTimeout(longTapTimer);
+            longTapTimer = null;
+        }
+    }, {passive: true});
 }
 
 // Touch/Mouse handlers
