@@ -15,6 +15,7 @@ let currentX = null;
 let currentY = null;
 let cardElement = null;
 let longTapTimer = null;
+let lastTapTime = 0;
 
 // Initialize app
 function initApp() {
@@ -40,24 +41,29 @@ function setupSwipeGestures() {
     cardElement.addEventListener('mouseup', handleMouseUp);
     cardElement.addEventListener('mouseleave', handleMouseUp);
 
-    // Double-click for text selection
+    // Double-click to toggle text selection
     foodText.addEventListener('dblclick', () => {
-        foodText.classList.add('selectable');
-        setTimeout(() => foodText.classList.remove('selectable'), 3000);
+        toggleTextSelection(foodText);
     });
 
-    // Long tap for mobile
+    // Mobile touch events
     foodText.addEventListener('touchstart', (e) => {
         longTapTimer = setTimeout(() => {
-            foodText.classList.add('selectable');
-            setTimeout(() => foodText.classList.remove('selectable'), 3000);
+            toggleTextSelection(foodText);
         }, 500);
     }, {passive: true});
 
-    foodText.addEventListener('touchend', () => {
+    foodText.addEventListener('touchend', (e) => {
         if (longTapTimer) {
             clearTimeout(longTapTimer);
             longTapTimer = null;
+            
+            // Double tap detection
+            const now = Date.now();
+            if (now - lastTapTime < 300) {
+                toggleTextSelection(foodText);
+            }
+            lastTapTime = now;
         }
     }, {passive: true});
 
@@ -79,9 +85,6 @@ function handleTouchStart(e) {
 }
 
 function handleMouseDown(e) {
-    if (e.target.closest('.food-text.selectable')) {
-        return;
-    }
     touchStartX = e.clientX;
     touchStartY = e.clientY;
     currentX = touchStartX;
@@ -578,5 +581,17 @@ class ForgetList {
 
     toJSONString() {
         return JSON.stringify(this.items);
+    }
+}
+
+function toggleTextSelection(element) {
+    const selection = window.getSelection();
+    if (selection.toString()) {
+        selection.removeAllRanges();
+    } else {
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        selection.removeAllRanges();
+        selection.addRange(range);
     }
 }
