@@ -1,101 +1,79 @@
-let food = [
-    // See https://ec.europa.eu/eurostat/cache/website/economy/food-price-monitoring/
-    // See https://ec.europa.eu/eurostat/web/hicp
-    // See https://www.ons.gov.uk/economy/inflationandpriceindices
+// See https://ec.europa.eu/eurostat/cache/website/economy/food-price-monitoring/
+// See https://ec.europa.eu/eurostat/web/hicp
+// See https://www.ons.gov.uk/economy/inflationandpriceindices
 
-    // 01.1.1 Bread and Cereals
-    'Large white loaves — sliced / unsliced',
+let food = [
+    // 01.1.1 Bread and Cereals (HICP monitored)
+    'Wholemeal bread',
+    'White bread',
     'Bread rolls',
     'Flour',
-    'Chilled pizza',
     'Pasta',
-    'Breakfast cereals',
-    'Gluten free breakfast cereals',
-    'Sponge cakes',
-    'Pack of individual cakes',
-    'Selected biscuits',
-    'Popcorn',
-    'Quiche',
-    'Large wholemeal loaf',
-    'Wraps / tortillas',
-    'Garlic bread',
     'Rice',
-    'Dehydrated noodles / pasta',
+    'Breakfast cereals',
     'Hot oat cereal',
-    'Cereal bars',
-    'Crumpets',
+    'Biscuits',
     'Crackers',
     'Couscous',
-    'Yorkshire puddings',
+    'Quinoa',
+    'Pearl barley',
+    'Buckwheat',
 
-    // 01.1.2 Meat
+    // 01.1.2 Meat (HICP monitored)
     'Beef',
     'Lamb',
     'Pork',
     'Chicken',
+    'Fresh diced turkey',
     'Pork sausages',
-    'Cooked meats — e.g., ham',
-    'Canned meats',
-    'Chicken kievs',
-    'Deli type meat',
-    'Meat pies',
-    'Fresh diced / minced turkey',
-    'Frozen chicken nuggets',
+    'Ham',
+    'Bacon',
     'Liver',
-    'Meat based snacks',
 
-    // 01.1.3 Fish
+    // 01.1.3 Fish (HICP monitored)
     'Fresh white fish fillets',
     'Canned tuna',
-    'Frozen prawns',
     'Fresh salmon fillets',
-    'Fish fingers',
-    'Frozen breaded / battered white fish',
+    'Frozen prawns',
+    'Sardines',
+    'Mackerel',
+    'Cod',
+    'Herring',
 
-    // 01.1.4 Milk, Cheese and Eggs
-    'Full-fat / semi-skimmed milk',
-    'Flavoured milk',
-    'Fresh cream',
-    'Chilled pot dessert',
+    // 01.1.4 Milk, Cheese and Eggs (HICP monitored)
+    'Semi-skimmed milk',
+    'Full-fat milk',
+    'Butter',
     'Eggs',
-    'Parmesan',
-    'Powdered baby formula',
-    'Non-dairy milk drink',
     'Yoghurt',
-    'Fromage frais',
     'Cheddar',
+    'Parmesan',
     'Soft cheese',
-    'Cheese spread',
+    'Greek yogurt',
+    'Cottage cheese',
+    'Mozzarella',
+    'Feta cheese',
 
-    // 01.1.6 Fruit
-    'Dessert apples',
+    // 01.1.6 Fruit (HICP monitored)
+    'Apples',
     'Pears',
     'Strawberries',
     'Oranges',
-    'Avocado pears',
-    'Kiwi fruit',
-    'Melon',
-    'Pineapple',
-    'Fresh fruit snacking pot',
-    'Dried fruit',
-    'Salted / roasted peanuts',
     'Bananas',
     'Lemon',
     'Grapes',
-    'Small oranges',
     'Plums',
     'Grapefruit',
     'Blueberries',
     'Raspberries',
-    'Frozen berries',
-    'Canned fruit',
+    'Kiwi fruit',
+    'Melon',
+    'Pineapple',
+    'Avocado',
+    'Dried fruit',
 
-    // 01.1.7 Vegetables
-
-    'Loose / pre-packed potatoes',
-    'Prepared mashed potato',
-    'Crisps — single / multi-packs',
-    'Corn based snacks',
+    // 01.1.7 Vegetables (HICP monitored)
+    'Potatoes',
     'Fresh tomatoes',
     'Cauliflower',
     'Mushrooms',
@@ -104,12 +82,7 @@ let food = [
     'Sweet potatoes',
     'Canned pulses',
     'Canned tomatoes',
-    'Frozen pre-prepared vegetables',
-    'Vegetarian burger / grills',
-    'Vegetable stir fry',
     'Pre-packed salad',
-    'Frozen chips',
-    'Vegetable crisps',
     'Peppers',
     'Cabbage',
     'Carrots',
@@ -120,42 +93,116 @@ let food = [
     'Canned baked beans',
     'Canned sweetcorn',
     'Frozen peas',
-    'Vegetarian pickle',
-    'Meat free sausages',
+    'Spinach',
+    'Kale',
+    'Brussels sprouts',
 
+    // Legumes & Nuts
+    'Lentils',
+    'Chickpeas',
+    'Black beans',
+    'Kidney beans',
+    'Almonds',
+    'Walnuts',
+    'Pumpkin seeds',
+    'Sunflower seeds',
 
-    // 01.1.9 Other Food Products
+    // Seasonal Items - January
+    'Citrus fruits (January)',
+    'Winter squash (January)',
+    'Leeks (January)',
+
+    // Seasonal Items - February
+    'Blood oranges (February)',
+    'Parsnips (February)',
+    'Purple sprouting broccoli (February)',
+
+    // Seasonal Items - March
+    'Rhubarb (March)',
+    'Spring onions (March)',
+    'Watercress (March)',
+
+    // Seasonal Items - April
+    'Asparagus (April)',
+    'Artichokes (April)',
+    'Spring lamb (April)',
+
+    // Seasonal Items - May
+    'New potatoes (May)',
+    'Radishes (May)',
+    'Strawberries (May)',
+
+    // Seasonal Items - June
+    'Elderflowers (June)',
+    'Broad beans (June)',
+    'Gooseberries (June)',
+
+    // Seasonal Items - July
+    'Raspberries (July)',
+    'Courgettes (July)',
+    'Fennel (July)',
+
+    // Seasonal Items - August
+    'Blackberries (August)',
+    'Sweetcorn (August)',
+    'Tomatoes (August)',
+
+    // Seasonal Items - September
+    'Apples (September)',
+    'Pears (September)',
+    'Plums (September)',
+
+    // Seasonal Items - October
+    'Pumpkins (October)',
+    'Chestnuts (October)',
+    'Wild mushrooms (October)',
+
+    // Seasonal Items - November
+    'Brussels sprouts (November)',
+    'Cranberries (November)',
+    'Celeriac (November)',
+
+    // Seasonal Items - December
+    'Winter cabbage (December)',
+    'Clementines (December)',
+    'Turnips (December)',
+
+    // 01.2.1 Coffee, Tea and Cocoa (HICP monitored)
+    'Tea bags',
+    'Instant coffee',
+    'Green tea',
+    'Herbal tea',
+
+    // 01.2.2 Mineral Waters, Soft Drinks and Juices (HICP monitored)
+    'Pure fruit juices',
+    'Fresh orange juice',
+    'Fresh apple juice',
+    'Mineral water',
+    'Fruit / vegetable juice smoothie',
+    'Alcohol-free beer',
+
+    // 01.1.9 Other Food Products (HICP monitored)
     'Soup',
-    'Sauces — e.g., tomato ketchup, mayonnaise',
+    'Mayonnaise',
+    'Tomato ketchup',
+    'Mustard',
+    'Vinegar',
+    'Salt',
+    'Sugar',
+    'Honey',
+    'Jam',
     'Dried herbs',
-    'Ready cooked meals',
+    'Extra virgin olive oil',
+    'Rapeseed oil',
     'Protein powder',
 
-    // Drinks
-
-    // 01.2.1 Coffee, Tea and Cocoa
-    'Tea bags',
-    'Coffee sachets',
-    'Coffee pods',
-    'Flavoured tea',
-    'Instant coffee',
-    'Hot chocolate drink',
-
-    // 01.2.2 Mineral Waters, Soft Drinks and Juices
-    'Pure fruit juices',
-    'Fruit drink',
-    'Mineral water',
-    'Lemonade',
-    'Fizzy drinks',
-    'Energy drinks',
-    'Squashes (drinks)',
-    'Fruit / vegetable juice smoothie',
-    'Flavoured water',
-    'Cola',
-    'Mixer drinks',
-
-    // Alcohol-free beer
-    'Alcohol-free beer',
+    // Additional Healthy Items
+    'Coconut oil',
+    'Avocado oil',
+    'Fresh herbs (basil, parsley, cilantro)',
+    'Turmeric',
+    'Ginger',
+    'Cinnamon',
 
 ];
 
