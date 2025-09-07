@@ -6,17 +6,13 @@
 
 ## Screenshots
 
-### Main Swipe Interface
-![Main Swipe Interface](screenshots/main-swipe-interface.jpg)
-*Tinder-like swipe interface for food recommendations with seasonal indicators*
-
-### Search and Database Management
-![Search and Database](screenshots/search-and-database.jpg)
-*Real-time search functionality and custom item management*
-
-### Shopping List
-![Shopping List](screenshots/shopping-list.jpg)
-*Visual shopping cart with strike-through functionality for collected items*
+<table>
+  <tr>
+    <td><img src="screenshots/main-swipe-interface.jpg" width="250" alt="Main Swipe Interface"><br><em>Main Swipe Interface</em></td>
+    <td><img src="screenshots/search-and-database.jpg" width="250" alt="Search and Database"><br><em>Search and Database</em></td>
+    <td><img src="screenshots/shopping-list.jpg" width="250" alt="Shopping List"><br><em>Shopping List</em></td>
+  </tr>
+</table>
 
 ## Features
 
