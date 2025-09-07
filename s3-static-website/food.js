@@ -26,6 +26,7 @@ function initApp() {
 // Setup swipe gestures
 function setupSwipeGestures() {
     cardElement = document.getElementById('foodCard');
+    const foodText = document.getElementById('foodItem');
 
     // Touch events
     cardElement.addEventListener('touchstart', handleTouchStart, {passive: true});
@@ -37,6 +38,12 @@ function setupSwipeGestures() {
     cardElement.addEventListener('mousemove', handleMouseMove);
     cardElement.addEventListener('mouseup', handleMouseUp);
     cardElement.addEventListener('mouseleave', handleMouseUp);
+
+    // Double-click for text selection
+    foodText.addEventListener('dblclick', () => {
+        foodText.classList.add('selectable');
+        setTimeout(() => foodText.classList.remove('selectable'), 3000);
+    });
 }
 
 // Touch/Mouse handlers
@@ -49,6 +56,9 @@ function handleTouchStart(e) {
 }
 
 function handleMouseDown(e) {
+    if (e.target.closest('.food-text.selectable')) {
+        return;
+    }
     touchStartX = e.clientX;
     touchStartY = e.clientY;
     currentX = touchStartX;

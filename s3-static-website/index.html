@@ -197,6 +197,25 @@
             text-align: center;
             padding: 20px;
             color: #333;
+            user-select: none;
+            -webkit-user-select: none;
+            cursor: pointer;
+        }
+
+        .food-text.selectable {
+            user-select: text;
+            -webkit-user-select: text;
+            cursor: text;
+        }
+
+        .food-text::selection {
+            background: #667eea;
+            color: white;
+        }
+
+        .food-text::-moz-selection {
+            background: #667eea;
+            color: white;
         }
 
         .month-text {
