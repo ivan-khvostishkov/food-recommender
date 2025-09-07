@@ -12,7 +12,7 @@ let food = [
     'Rice',
     'Breakfast cereals',
     'Hot oat cereal',
-    'Biscuits (sweet snacks)',
+    'Biscuits (sweet snacks / cookies)',
     'Crackers (savory with cheese)',
     'Couscous',
     'Quinoa',
