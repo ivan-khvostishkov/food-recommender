@@ -4,6 +4,20 @@
 
 [https://food.nosocial.net/](https://food.nosocial.net/)
 
+## Screenshots
+
+### Main Swipe Interface
+![Main Swipe Interface](screenshots/main-swipe-interface.jpg)
+*Tinder-like swipe interface for food recommendations with seasonal indicators*
+
+### Search and Database Management
+![Search and Database](screenshots/search-and-database.jpg)
+*Real-time search functionality and custom item management*
+
+### Shopping List
+![Shopping List](screenshots/shopping-list.jpg)
+*Visual shopping cart with strike-through functionality for collected items*
+
 ## Features
 
 ### 🍎 Smart Food Discovery
