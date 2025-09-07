@@ -16,7 +16,8 @@ let currentX = null;
 let currentY = null;
 let cardElement = null;
 let longTapTimer = null;
-let lastTapTime = 0;
+let mouseDownTimer = null;
+let isDoubleClick = false;
 
 // Initialize app
 function initApp() {
@@ -42,42 +43,60 @@ function setupSwipeGestures() {
     cardElement.addEventListener('mouseup', handleMouseUp);
     cardElement.addEventListener('mouseleave', handleMouseUp);
 
-    // Double-click to toggle text selection
-    foodText.addEventListener('dblclick', () => {
-        toggleTextSelection(foodText);
+    // Let system handle double-click text selection naturally
+
+    // Mouse long press events
+    foodText.addEventListener('mousedown', (e) => {
+        mouseDownTimer = setTimeout(() => {
+            isDoubleClick = true;
+            toggleTextSelection(foodText);
+            setTimeout(() => { isDoubleClick = false; }, 200);
+        }, 600);
     });
 
-    // Mobile touch events
+    foodText.addEventListener('mouseup', (e) => {
+        if (mouseDownTimer) {
+            clearTimeout(mouseDownTimer);
+            mouseDownTimer = null;
+        }
+    });
+
+    // Mobile touch events for text selection
     foodText.addEventListener('touchstart', (e) => {
         longTapTimer = setTimeout(() => {
+            isDoubleClick = true;
             toggleTextSelection(foodText);
-        }, 500);
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+            setTimeout(() => { isDoubleClick = false; }, 200);
+        }, 600);
     }, {passive: true});
 
     foodText.addEventListener('touchend', (e) => {
         if (longTapTimer) {
             clearTimeout(longTapTimer);
             longTapTimer = null;
-            
-            // Double tap detection
-            const now = Date.now();
-            if (now - lastTapTime < 300) {
-                toggleTextSelection(foodText);
-            }
-            lastTapTime = now;
         }
     }, {passive: true});
 
-    foodText.addEventListener('touchmove', () => {
+    foodText.addEventListener('touchmove', (e) => {
         if (longTapTimer) {
             clearTimeout(longTapTimer);
             longTapTimer = null;
         }
     }, {passive: true});
+
+
 }
 
 // Touch/Mouse handlers
 function handleTouchStart(e) {
+    if (isDoubleClick) return;
+    // Check if there's an active text selection
+    const selection = window.getSelection();
+    if (selection.toString()) return;
+    
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
     currentX = touchStartX;
@@ -86,6 +105,11 @@ function handleTouchStart(e) {
 }
 
 function handleMouseDown(e) {
+    if (isDoubleClick) return;
+    // Check if there's an active text selection
+    const selection = window.getSelection();
+    if (selection.toString()) return;
+    
     touchStartX = e.clientX;
     touchStartY = e.clientY;
     currentX = touchStartX;
@@ -612,12 +636,24 @@ class ForgetList {
 
 function toggleTextSelection(element) {
     const selection = window.getSelection();
+    
     if (selection.toString()) {
+        // Clear selection
         selection.removeAllRanges();
     } else {
+        // Create selection
         const range = document.createRange();
         range.selectNodeContents(element);
         selection.removeAllRanges();
         selection.addRange(range);
+        
+        // Prevent the selection from being immediately cleared
+        setTimeout(() => {
+            if (selection.toString() === '') {
+                // Re-select if selection was cleared
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        }, 50);
     }
 }
