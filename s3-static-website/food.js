@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013-2025 NoSocial.Net & Ivan Khvostishkov. Co-authored with Amazon Q
+ */
+
 let food = FoodDatabase.getFoodList();
 
 const DAYS_TO_FORGET = 7;

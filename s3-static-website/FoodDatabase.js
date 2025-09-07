@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013-2025 NoSocial.Net & Ivan Khvostishkov. Co-authored with Amazon Q
+ */
+
 class FoodDatabase {
     static getFoodList() {
         return [
