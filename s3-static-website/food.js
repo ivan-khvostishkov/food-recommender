@@ -451,20 +451,21 @@ function saveShoppingListToLocalStore() {
 }
 
 function loadFoodListFromLocalStore() {
-    const stored = localStorage.getItem('foodList');
-    if (stored) {
-        try {
-            const customFood = JSON.parse(stored);
-            food = [...food, ...customFood];
-        } catch (e) {
-            console.error('Error loading custom food list');
-        }
-    }
+    const baseFood = FoodDatabase.getFoodList();
+    const additions = JSON.parse(localStorage.getItem('customAdditions') || '[]');
+    const deletions = JSON.parse(localStorage.getItem('customDeletions') || '[]');
+    
+    food = [...baseFood, ...additions.filter(item => !baseFood.includes(item))]
+        .filter(item => !deletions.includes(item));
 }
 
 function saveFoodListToLocalStore() {
-    // Only save custom additions/deletions
-    localStorage.setItem('foodList', JSON.stringify(food));
+    const baseFood = FoodDatabase.getFoodList();
+    const additions = food.filter(item => !baseFood.includes(item));
+    const deletions = baseFood.filter(item => !food.includes(item));
+    
+    localStorage.setItem('customAdditions', JSON.stringify(additions));
+    localStorage.setItem('customDeletions', JSON.stringify(deletions));
 }
 
 // Keep your existing ForgetList class and related functions
