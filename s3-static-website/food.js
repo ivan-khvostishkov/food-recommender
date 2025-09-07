@@ -16,6 +16,8 @@ let currentX = null;
 let currentY = null;
 let cardElement = null;
 let hasDragged = false;
+let textSelected = false;
+
 // Initialize app
 function initApp() {
     loadFromLocalStorage();
@@ -40,13 +42,34 @@ function setupSwipeGestures() {
     cardElement.addEventListener('mouseup', handleMouseUp);
     cardElement.addEventListener('mouseleave', handleMouseUp);
 
+    // Text selection on click
+    foodText.addEventListener('click', (e) => {
+        if (!hasDragged) {
+            if (textSelected) {
+                window.getSelection().removeAllRanges();
+                textSelected = false;
+            } else {
+                const range = document.createRange();
+                range.selectNodeContents(foodText);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                textSelected = true;
+            }
+        }
+    });
 
-
-
+    // Clear selection when clicking elsewhere
+    document.addEventListener('click', (e) => {
+        if (!foodText.contains(e.target)) {
+            window.getSelection().removeAllRanges();
+            textSelected = false;
+        }
+    });
 }
 
 // Touch/Mouse handlers
 function handleTouchStart(e) {
+    if (textSelected) return;
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
     currentX = touchStartX;
@@ -55,6 +78,15 @@ function handleTouchStart(e) {
 }
 
 function handleMouseDown(e) {
+    if (textSelected) {
+        if (!document.getElementById('foodItem').contains(e.target)) {
+            window.getSelection().removeAllRanges();
+            textSelected = false;
+        } else {
+            return;
+        }
+    }
+    hasDragged = false;
     touchStartX = e.clientX;
     touchStartY = e.clientY;
     currentX = touchStartX;
@@ -66,6 +98,8 @@ function handleMouseDown(e) {
 function handleTouchMove(e) {
     if (!touchStartX) return;
     hasDragged = true;
+    textSelected = false;
+    window.getSelection().removeAllRanges();
     currentX = e.touches[0].clientX;
     currentY = e.touches[0].clientY;
     updateCardPosition();
@@ -74,6 +108,8 @@ function handleTouchMove(e) {
 function handleMouseMove(e) {
     if (!touchStartX) return;
     hasDragged = true;
+    textSelected = false;
+    window.getSelection().removeAllRanges();
     currentX = e.clientX;
     currentY = e.clientY;
     updateCardPosition();
