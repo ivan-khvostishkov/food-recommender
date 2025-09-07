@@ -63,10 +63,11 @@
             transform: scale(1.05);
         }
 
-        .logo i {
-            font-size: 24px;
+        .logo-icon {
+            width: 24px;
+            height: 24px;
             margin-right: 10px;
-            color: #c0392b;
+            fill: #c0392b;
         }
 
         .logo-text {
@@ -519,7 +520,14 @@
     <!-- Header -->
     <div class="header">
         <div class="logo" onclick="showScreen('mainScreen')">
-            <i class="fa-solid fa-pepper-hot"></i>
+            <svg class="logo-icon" viewBox="0 0 24 24">
+                <path d="M12 2c-1.5 0-3 1-4 2.5C7 6 6.5 7.5 6.5 9c0 2.5 1 4.5 2.5 6 1 1 2 1.5 3 1.8v3.7c0 .8.7 1.5 1.5 1.5h1c.8 0 1.5-.7 1.5-1.5v-3.7c1-.3 2-.8 3-1.8 1.5-1.5 2.5-3.5 2.5-6 0-1.5-.5-3-1.5-4.5C15 3 13.5 2 12 2zm0 2c.8 0 1.5.5 2.2 1.2.7.8 1.3 1.8 1.3 2.8 0 1.5-.5 2.8-1.5 3.8-.5.5-1 .8-1.5 1-.5-.2-1-.5-1.5-1-1-.8-1.5-2.3-1.5-3.8 0-1 .6-2 1.3-2.8C10.5 4.5 11.2 4 12 4z"/>
+                <circle cx="10" cy="7" r="1"/>
+                <circle cx="14" cy="8" r="1"/>
+                <circle cx="12" cy="9" r="1"/>
+                <circle cx="11" cy="11" r="0.8"/>
+                <circle cx="13" cy="10" r="0.8"/>
+            </svg>
             <div class="logo-text">
                 <div class="logo-main">Food Recommender</div>
                 <div class="logo-sub">by NoSocial.Net</div>
