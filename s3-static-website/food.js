@@ -69,9 +69,18 @@ function handleMouseMove(e) {
 
 function updateCardPosition() {
     const deltaX = currentX - touchStartX;
-    const rotation = deltaX * 0.1;
-    cardElement.style.transform = `translateX(${deltaX}px) rotate(${rotation}deg)`;
-    cardElement.style.opacity = 1 - Math.abs(deltaX) / 300;
+    const deltaY = currentY - touchStartY;
+    
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        // Horizontal swipe (accept/reject)
+        const rotation = deltaX * 0.1;
+        cardElement.style.transform = `translateX(${deltaX}px) rotate(${rotation}deg)`;
+        cardElement.style.opacity = 1 - Math.abs(deltaX) / 300;
+    } else if (deltaY > 0) {
+        // Vertical swipe down (rotate)
+        cardElement.style.transform = `translateY(${deltaY}px)`;
+        cardElement.style.opacity = 1 - deltaY / 300;
+    }
 }
 
 function handleTouchEnd() {
@@ -85,6 +94,7 @@ function handleMouseUp() {
 
 function handleSwipeEnd() {
     const deltaX = currentX - touchStartX;
+    const deltaY = currentY - touchStartY;
     cardElement.classList.remove('dragging');
 
     if (Math.abs(deltaX) > 100) {
@@ -95,6 +105,15 @@ function handleSwipeEnd() {
             cardElement.classList.add('swiped-left');
             setTimeout(() => handleReject(), 200);
         }
+    } else if (deltaY > 100) {
+        // Swipe down to rotate
+        cardElement.style.transform = 'translateY(100px)';
+        cardElement.style.opacity = '0.5';
+        setTimeout(() => {
+            rotate();
+            cardElement.style.transform = '';
+            cardElement.style.opacity = '';
+        }, 200);
     } else {
         cardElement.style.transform = '';
         cardElement.style.opacity = '';
@@ -102,6 +121,7 @@ function handleSwipeEnd() {
 
     touchStartX = null;
     currentX = null;
+    currentY = null;
 }
 
 // Screen navigation
