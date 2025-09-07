@@ -60,9 +60,7 @@ function setupSwipeGestures() {
 
 // Touch/Mouse handlers
 function handleTouchStart(e) {
-    if (document.getElementById('foodItem').contains(e.target)) {
-        return;
-    }
+    if (textSelected) return;
     
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
@@ -76,9 +74,8 @@ function handleMouseDown(e) {
         if (!document.getElementById('foodItem').contains(e.target)) {
             window.getSelection().removeAllRanges();
             textSelected = false;
-        } else {
-            return;
         }
+        return;
     }
     hasDragged = false;
     touchStartX = e.clientX;
@@ -90,7 +87,7 @@ function handleMouseDown(e) {
 }
 
 function handleTouchMove(e) {
-    if (!touchStartX) return;
+    if (!touchStartX || textSelected) return;
     
     hasDragged = true;
     currentX = e.touches[0].clientX;
@@ -99,10 +96,8 @@ function handleTouchMove(e) {
 }
 
 function handleMouseMove(e) {
-    if (!touchStartX) return;
+    if (!touchStartX || textSelected) return;
     hasDragged = true;
-    textSelected = false;
-    window.getSelection().removeAllRanges();
     currentX = e.clientX;
     currentY = e.clientY;
     updateCardPosition();
