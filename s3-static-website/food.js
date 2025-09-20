@@ -167,7 +167,7 @@ function showScreen(screenId) {
 
     if (screenId === 'searchScreen') {
         document.querySelectorAll('.icon-btn')[0].classList.add('active');
-        loadSearchItems();
+        handleSearch();
     } else if (screenId === 'shoppingScreen') {
         document.querySelectorAll('.icon-btn')[1].classList.add('active');
         loadShoppingList();
