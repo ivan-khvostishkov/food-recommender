@@ -315,14 +315,15 @@ function displaySearchItems(items) {
     items.forEach((item, index) => {
         const row = document.createElement('div');
         row.className = 'item-row';
+        const formattedItem = formatCheeseItem(item);
         row.innerHTML = `
-            <span class="item-name">${item}</span>
+            <span class="item-name">${formattedItem}</span>
             <button class="delete-btn" onclick="confirmDelete('${item.replace(/'/g, "\\'")}')">
                 <i class="fa-solid fa-trash"></i>
             </button>
         `;
         row.onclick = (e) => {
-            if (!e.target.closest('.delete-btn')) {
+            if (!e.target.closest('.delete-btn') && !e.target.closest('a')) {
                 selectItem(item);
             }
         };
@@ -386,9 +387,10 @@ function loadShoppingList() {
             const row = document.createElement('div');
             row.className = 'item-row';
             const isCollected = collectedItems.includes(item);
+            const formattedItem = formatCheeseItem(item);
             row.innerHTML = `
                 <span class="item-number">${index + 1}.</span>
-                <span class="item-name ${isCollected ? 'collected' : ''}" onclick="toggleCollected('${item.replace(/'/g, "\\'")}')">${item}</span>
+                <span class="item-name ${isCollected ? 'collected' : ''}" onclick="if (!event.target.closest('a')) toggleCollected('${item.replace(/'/g, "\\'")}')">${formattedItem}</span>
                 <button class="delete-btn" onclick="removeFromCart('${item.replace(/'/g, "\\'")}')">
                     <i class="fa-solid fa-trash"></i>
                 </button>
@@ -534,11 +536,26 @@ function hasSomethingToRotate() {
     return forgetList.items.length < food.length;
 }
 
-// Format seasonal items with month on second line
+// Format cheese items with hyperlinks
+function formatCheeseItem(item) {
+    const cheeseMatch = item.match(/^(.+?)\s+\(cheese\)$/);
+    if (cheeseMatch) {
+        const [, cheeseName] = cheeseMatch;
+        const cheeseQuery = cheeseName.replace(/\s+/g, '+');
+        return `${cheeseName} (<a href="https://www.cheese.com/?q=${cheeseQuery}" target="_blank" style="color: #667eea; text-decoration: underline;">cheese</a>)`;
+    }
+    return item;
+}
+
+// Format seasonal items with month on second line and cheese links
 function formatSeasonalItem(item) {
     const monthMatch = item.match(/^(.+?)\s+\(([^)]+)\)$/);
     if (monthMatch) {
         const [, itemName, month] = monthMatch;
+        if (month === 'cheese') {
+            const cheeseQuery = itemName.replace(/\s+/g, '+');
+            return `<a href="https://www.cheese.com/?q=${cheeseQuery}" target="_blank" style="color: inherit; text-decoration: none;">${itemName}</a> <br><span class="month-text"><a href="https://www.cheese.com/?q=${cheeseQuery}" target="_blank" style="color: #667eea; text-decoration: underline;">${month}</a></span>`;
+        }
         return `${itemName} <br><span class="month-text">${month}</span>`;
     }
     return item;
