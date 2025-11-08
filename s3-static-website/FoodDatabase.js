@@ -135,7 +135,7 @@ class FoodDatabase {
             'Baguette de Thierache (cheese)',
             'Brousse (cheese)',
             'Fribourg (cheese)',
-            'Katschkawalj (cheese)',
+            'Kashkaval (cheese)',
 
             // 01.1.6 Fruit (HICP monitored)
             'Apples',
