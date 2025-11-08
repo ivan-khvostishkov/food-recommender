@@ -350,8 +350,12 @@
         }
 
         .add-item-container {
-            padding: 20px;
+            padding: 10px 0;
             text-align: center;
+        }
+
+        .add-item-container p {
+            margin-bottom: 15px;
         }
 
         .add-btn {
@@ -597,13 +601,13 @@
                    oninput="handleSearch()">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
         </div>
-        <div class="items-list" id="itemsList"></div>
         <div class="add-item-container" id="addItemContainer" style="display: none;">
             <p>Item not found</p>
             <button class="add-btn" onclick="addNewItem()">
                 <i class="fa-solid fa-plus"></i> Add Item
             </button>
         </div>
+        <div class="items-list" id="itemsList"></div>
     </div>
 
     <!-- Shopping List Screen -->
