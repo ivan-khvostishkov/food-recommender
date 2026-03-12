@@ -4,7 +4,7 @@
 
 let food = FoodDatabase.getFoodList();
 
-const DAYS_TO_FORGET = 7;
+const DAYS_TO_FORGET = 30;
 let forgetList = null;
 let shoppingList = [];
 let collectedItems = [];

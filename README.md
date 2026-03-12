@@ -20,7 +20,7 @@
 - **Swipe Interface**: Tinder-like swipe gestures for food recommendations
 - **Seasonal Awareness**: Displays seasonal foods with month indicators
 - **Comprehensive Database**: 500+ food items including HICP monitored categories
-- **Forget System**: Temporarily hide rejected items for 7 days
+- **Forget System**: Temporarily hide rejected items for 30 days
 
 ### 🛒 Shopping List Management
 - **One-Touch Adding**: Add items to shopping list with right swipe or green button
@@ -51,7 +51,7 @@
 
 1. **Swipe or tap** to interact with food recommendations:
    - ➡️ Right swipe/green button: Add to shopping list
-   - ⬅️ Left swipe/red button: Forget for 7 days
+   - ⬅️ Left swipe/red button: Forget for 30 days
    - 🔄 Down swipe/rotate button: Get new recommendation
 
 2. **Search** for specific items using the magnifying glass icon
