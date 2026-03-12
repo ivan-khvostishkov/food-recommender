@@ -24,6 +24,7 @@ function initApp() {
     setupSwipeGestures();
     rotate();
     updateUI();
+    loadVersionInfo();
 }
 
 // Setup swipe gestures
@@ -611,6 +612,34 @@ class ForgetList {
 
     toJSONString() {
         return JSON.stringify(this.items);
+    }
+}
+
+// Load version info from service worker
+function loadVersionInfo() {
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+        // Try to get version from service worker
+        fetch('/sw.js')
+            .then(response => response.text())
+            .then(swContent => {
+                const match = swContent.match(/CACHE_NAME = ['"]([^'"]+)['"]/); 
+                if (match) {
+                    const cacheName = match[1];
+                    const versionMatch = cacheName.match(/v([\d.]+)/);
+                    if (versionMatch) {
+                        document.getElementById('versionInfo').textContent = versionMatch[1];
+                    } else {
+                        document.getElementById('versionInfo').textContent = cacheName;
+                    }
+                } else {
+                    document.getElementById('versionInfo').textContent = 'Unknown';
+                }
+            })
+            .catch(() => {
+                document.getElementById('versionInfo').textContent = 'Unknown';
+            });
+    } else {
+        document.getElementById('versionInfo').textContent = 'Unknown';
     }
 }
 
