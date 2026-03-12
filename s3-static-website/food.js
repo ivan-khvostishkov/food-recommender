@@ -291,7 +291,7 @@ function handleSearch() {
         // Filter items
         const filtered = food.filter(item =>
             item.toLowerCase().includes(searchTerm)
-        );
+        ).sort();
 
         if (filtered.length === 0) {
             itemsList.innerHTML = '';
