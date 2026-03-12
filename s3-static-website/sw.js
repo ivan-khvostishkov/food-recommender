@@ -1,4 +1,4 @@
-const CACHE_NAME = 'food-recommender-v1';
+const CACHE_NAME = 'food-recommender-v2';
 const urlsToCache = [
   '/',
   '/index.html',
