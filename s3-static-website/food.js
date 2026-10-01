@@ -371,7 +371,7 @@ function displaySearchItems(items) {
 
     items.forEach((item, index) => {
         const row = document.createElement('div');
-        row.className = 'item-row';
+        row.className = isHousehold(item) ? 'item-row household' : 'item-row';
         const formattedItem = formatListItem(item);
         const tagChips = getItemTags(item)
             .map(tag => `<span class="tag-chip" onclick="searchTag('${tag}')">#${tag}</span>`)
@@ -394,6 +394,11 @@ function displaySearchItems(items) {
 
 function getItemTags(item) {
     return foodTags[item] || customTags[item] || [];
+}
+
+// Non-food products (#hygiene): shown in a different color, without food links, never recommended
+function isHousehold(item) {
+    return getItemTags(item).includes('hygiene');
 }
 
 function searchTag(tag) {
@@ -463,7 +468,7 @@ function loadShoppingList() {
         shoppingListEl.innerHTML = '';
         shoppingList.forEach((item, index) => {
             const row = document.createElement('div');
-            row.className = 'item-row';
+            row.className = isHousehold(item) ? 'item-row household' : 'item-row';
             const isCollected = collectedItems.includes(item);
             const formattedItem = formatListItem(item);
             row.innerHTML = `
@@ -782,6 +787,7 @@ function siteLink(site, item, className) {
 // Format items in lists: "(cheese)" links to cheese.com, "(try in ...)" to the seasons guide,
 // other items get an info icon linking to their reference website
 function formatListItem(item) {
+    if (isHousehold(item)) return item;
     const {name, details} = splitItemName(item);
     if (details === 'cheese') {
         return `${name} (${siteLink(INFO_SITES.cheese, item, 'info-link')}cheese</a>)`;
@@ -794,6 +800,7 @@ function formatListItem(item) {
 
 // Format the main card: details on second line, then links to reference websites
 function formatCardItem(item) {
+    if (isHousehold(item)) return `<span class="household-name">${item}</span>`;
     const {name, details} = splitItemName(item);
     const infoSite = getInfoSite(item);
     const links = [infoSite, RECIPES_SITE, NUTRITION_SITE]

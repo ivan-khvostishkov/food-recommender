@@ -14,6 +14,7 @@ class FoodDatabase {
             {name: 'Fruits', tags: ['fruits'], weight: 2},
             {name: 'Whole grains', tags: ['grains'], weight: 3},
             {name: 'Sweets', tags: ['sweets'], weight: 0},
+            {name: 'Household', tags: ['hygiene'], weight: 0},
             {name: 'Other', tags: [], weight: 1}
         ];
     }
