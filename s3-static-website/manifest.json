@@ -1,6 +1,6 @@
 {
-  "name": "Food Recommender by NoSocial.Net",
-  "short_name": "Food Recommender",
+  "name": "Food by NoSocial.Net",
+  "short_name": "Food",
   "description": "Intelligent app that tells you what to buy in a grocery store when you don't know what to buy",
   "start_url": "/",
   "display": "standalone",

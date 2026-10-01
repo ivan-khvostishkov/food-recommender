@@ -527,8 +527,10 @@ let pendingImport = null;
 function exportData() {
     const data = {
         app: EXPORT_APP_ID,
-        formatVersion: 1,
+        formatVersion: 2,
         exportedAt: new Date().toISOString(),
+        // Full current product list, standard and custom, as "Name #tag #tag"
+        foodList: food.map(formatEntry),
         customAdditions: JSON.parse(localStorage.getItem('customAdditions') || '[]'),
         customDeletions: JSON.parse(localStorage.getItem('customDeletions') || '[]'),
         customTags: customTags,
@@ -546,6 +548,10 @@ function exportData() {
     link.click();
     document.body.removeChild(link);
     setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+}
+
+function formatEntry(item) {
+    return [item, ...getItemTags(item).map(tag => '#' + tag)].join(' ');
 }
 
 function chooseImportFile() {
@@ -574,27 +580,56 @@ function handleImportFile(event) {
     reader.readAsText(file);
 }
 
+// Product list of an export as "Name #tag" entries; older exports only hold the customizations
+function getImportedEntries(data) {
+    const asArray = value => Array.isArray(value) ? value : [];
+    if (Array.isArray(data.foodList)) return data.foodList.filter(entry => typeof entry === 'string');
+
+    const deletions = migrateItemNames(asArray(data.customDeletions));
+    const tags = data.customTags || {};
+    return [
+        ...FoodDatabase.getEntries().filter(entry => !deletions.includes(entry.split(' #')[0])),
+        ...asArray(data.customAdditions).map(item => [item, ...asArray(tags[item]).map(tag => '#' + tag)].join(' '))
+    ];
+}
+
+// Merge an export: existing products and their shopping list status are kept,
+// new products are added as custom items together with their shopping list status
+function importData(data) {
+    const asArray = value => Array.isArray(value) ? value : [];
+    const importedShopping = migrateItemNames(asArray(data.shoppingList));
+    const importedCollected = migrateItemNames(asArray(data.collectedItems));
+    let added = 0;
+
+    getImportedEntries(data).forEach(entry => {
+        const [rawName, ...tags] = entry.split(' #');
+        const name = renamedItems[rawName.trim()] || rawName.trim();
+        if (!name || food.includes(name)) return;
+
+        food.push(name);
+        added++;
+        if (!foodTags[name] && tags.length > 0) customTags[name] = tags;
+        if (importedShopping.includes(name) && !shoppingList.includes(name)) shoppingList.push(name);
+        if (importedCollected.includes(name) && !collectedItems.includes(name)) collectedItems.push(name);
+    });
+
+    // Shopping list entries for deleted products are dropped
+    shoppingList = shoppingList.filter(item => food.includes(item));
+    collectedItems = collectedItems.filter(item => shoppingList.includes(item));
+
+    saveFoodListToLocalStore();
+    saveShoppingListToLocalStore();
+    return added;
+}
+
 function handleImportResponse(confirmed) {
     hideDialog('importDialog');
 
     if (confirmed && pendingImport) {
-        const data = pendingImport;
-        const asArray = value => Array.isArray(value) ? value : [];
-        localStorage.setItem('customAdditions', JSON.stringify(asArray(data.customAdditions)));
-        localStorage.setItem('customDeletions', JSON.stringify(asArray(data.customDeletions)));
-        localStorage.setItem('customTags', JSON.stringify(data.customTags || {}));
-        localStorage.setItem('shoppingList', JSON.stringify(asArray(data.shoppingList)));
-        localStorage.setItem('collectedItems', JSON.stringify(asArray(data.collectedItems)));
-        localStorage.setItem('forgetList', JSON.stringify(asArray(data.forgetList)));
-        localStorage.setItem('dontAskForget', String(data.dontAskForget === true));
-        localStorage.setItem('dontAskAdd', String(data.dontAskAdd === true));
-
-        shoppingList = [];
-        collectedItems = [];
-        loadFromLocalStorage();
-        rotate();
+        const added = importData(pendingImport);
         updateUI();
         showScreen('mainScreen');
+        alert(added === 1 ? 'Imported 1 new product' : `Imported ${added} new products`);
     }
 
     pendingImport = null;
