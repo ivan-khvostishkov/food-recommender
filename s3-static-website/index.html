@@ -220,6 +220,30 @@
             margin-top: 10px;
         }
 
+        .card-links {
+            font-size: 0.35em;
+            font-weight: normal;
+            color: #999;
+            display: block;
+            margin-top: 15px;
+        }
+
+        .info-link {
+            color: #667eea;
+            text-decoration: underline;
+        }
+
+        .plain-link {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .info-icon {
+            color: #667eea;
+            font-size: 0.75em;
+            margin-left: 4px;
+        }
+
         .action-buttons {
             position: absolute;
             bottom: 40px;
@@ -285,12 +309,12 @@
 
         .search-container {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .search-input {
             width: 100%;
-            padding: 15px 45px 15px 15px;
+            padding: 15px 75px 15px 15px;
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             font-size: 16px;
@@ -308,6 +332,79 @@
             top: 50%;
             transform: translateY(-50%);
             color: #999;
+        }
+
+        .clear-search-btn {
+            display: none;
+            position: absolute;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 16px;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .clear-search-btn:hover {
+            color: #666;
+        }
+
+        .search-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .result-count {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #666;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .toggle input {
+            display: none;
+        }
+
+        .toggle-slider {
+            position: relative;
+            width: 36px;
+            height: 20px;
+            background: #ccc;
+            border-radius: 10px;
+            transition: background 0.2s ease;
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            left: 2px;
+            top: 2px;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.2s ease;
+        }
+
+        .toggle input:checked + .toggle-slider {
+            background: #667eea;
+        }
+
+        .toggle input:checked + .toggle-slider::before {
+            transform: translateX(16px);
         }
 
         .items-list {
@@ -344,6 +441,27 @@
         .item-name.collected {
             text-decoration: line-through;
             opacity: 0.6;
+        }
+
+        .item-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 4px;
+            margin: 0 8px;
+        }
+
+        .tag-chip {
+            background: #eef0fc;
+            color: #667eea;
+            border-radius: 10px;
+            padding: 2px 8px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .tag-chip:hover {
+            background: #dde1fa;
         }
 
         .delete-btn {
@@ -449,6 +567,27 @@
         .reset-btn:hover {
             background: #c0392b;
             transform: scale(1.05);
+        }
+
+        .data-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .data-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .data-btn:hover {
+            background: #5568d3;
         }
 
         /* Dialogs */
@@ -603,9 +742,20 @@
             <input type="text"
                    id="searchInput"
                    class="search-input"
-                   placeholder="Search or add..."
+                   placeholder="Search, #tag or add..."
                    oninput="handleSearch()">
+            <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()" title="Clear search">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        </div>
+        <div class="search-options">
+            <span class="result-count" id="resultCount"></span>
+            <label class="toggle">
+                Shuffle
+                <input type="checkbox" id="shuffleToggle" onchange="handleSearch()">
+                <span class="toggle-slider"></span>
+            </label>
         </div>
         <div class="add-item-container" id="addItemContainer" style="display: none;">
             <p>Item not found</p>
@@ -637,8 +787,23 @@
                 <li>Swipe left or tap the red arrow to forget items for 30 days</li>
                 <li>Tap the rotate button or swipe down for a new recommendation</li>
                 <li>Use the search to find specific items, add missing ones, or delete unwanted ones</li>
+                <li>Search by tag: #meat, #fish, #eggs, #beans, #nuts, #milk, #cheese, #fats, #vegies, #fruits, #grains or #sweets</li>
+                <li>Recommendations follow the <a href="https://realfood.gov" target="_blank">realfood.gov</a> food pyramid: protein and dairy most often, then vegetables, grains and fruits; sweets are never recommended</li>
+                <li>Add your own tagged items, e.g. "Tofu #vegies"</li>
                 <li>View your shopping list anytime</li>
             </ul>
+
+            <h3 style="margin-top: 30px;">Your data:</h3>
+            <p>Save your products (with all customizations) and shopping list to a file, or restore them on another device.</p>
+            <div class="data-buttons">
+                <button class="data-btn" onclick="exportData()">
+                    <i class="fa-solid fa-download"></i> Export
+                </button>
+                <button class="data-btn" onclick="chooseImportFile()">
+                    <i class="fa-solid fa-upload"></i> Import
+                </button>
+            </div>
+            <input type="file" id="importFile" accept=".json,application/json" style="display: none;" onchange="handleImportFile(event)">
 
             <h3 style="margin-top: 30px;">Help and support:</h3>
             <p><a href="mailto:food@nosocial.net">food@nosocial.net</a></p>
@@ -692,6 +857,15 @@
     <div class="dialog-buttons">
         <button class="dialog-btn dialog-btn-cancel" onclick="handleDeleteResponse(false)">Cancel</button>
         <button class="dialog-btn dialog-btn-confirm" onclick="handleDeleteResponse(true)">Delete</button>
+    </div>
+</div>
+
+<div id="importDialog" class="dialog">
+    <h3>Import data?</h3>
+    <p>This will replace your current products, shopping list and forgotten items.</p>
+    <div class="dialog-buttons">
+        <button class="dialog-btn dialog-btn-cancel" onclick="handleImportResponse(false)">Cancel</button>
+        <button class="dialog-btn dialog-btn-confirm" onclick="handleImportResponse(true)">Import</button>
     </div>
 </div>
 
